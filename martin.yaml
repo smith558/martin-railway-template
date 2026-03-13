@@ -2,7 +2,7 @@ listen_addresses: "0.0.0.0:${PORT}"
 worker_processes: 4
 cache_size_mb: 512
 preferred_encoding: gzip
-web_ui: ${MARTIN_WEB_UI:-disable}
+web_ui: ${MARTIN_WEB_UI}
 on_invalid: abort
 
 postgres:
@@ -13,7 +13,7 @@ postgres:
 
   auto_publish:
     from_schemas:
-      - ${MARTIN_PUBLISH_SCHEMA:-public}
+      - ${MARTIN_PUBLISH_SCHEMA}
     tables:
       source_id_format: "table.{schema}.{table}.{column}"
       clip_geom: true

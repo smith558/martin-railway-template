@@ -19,6 +19,8 @@ case "${DATABASE_URL}" in
 esac
 
 export PORT="${PORT:-3000}"
+export MARTIN_WEB_UI="${MARTIN_WEB_UI:-disable}"
+export MARTIN_PUBLISH_SCHEMA="${MARTIN_PUBLISH_SCHEMA:-public}"
 
 if [ "${check_only}" = "true" ]; then
   exit 0
