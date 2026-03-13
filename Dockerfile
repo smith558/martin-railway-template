@@ -1,4 +1,4 @@
-FROM ghcr.io/maplibre/martin:1.3.0
+FROM ghcr.io/maplibre/martin:1.3.1
 
 COPY martin.yaml /etc/martin/martin.yaml
 
