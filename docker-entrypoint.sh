@@ -8,7 +8,7 @@ fi
 
 case "${DATABASE_URL}" in
   *"channel_binding=require"*)
-    echo "warning: DATABASE_URL uses channel_binding=require. In local testing, this caused Martin v1.3.1 to fail PostgreSQL startup. If Martin does not boot, try removing channel_binding=require from DATABASE_URL." >&2
+    echo "warning: DATABASE_URL uses channel_binding=require. In testing, this caused Martin v1.3.1 to fail PostgreSQL startup. If Martin does not boot, try removing channel_binding=require from DATABASE_URL." >&2
     ;;
 esac
 
