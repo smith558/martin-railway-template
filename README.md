@@ -28,6 +28,7 @@ Set these variables on `Martin`:
 ```env
 DATABASE_URL=${{PostGIS.DATABASE_URL}}
 MARTIN_PUBLISH_SCHEMA=public
+MARTIN_WEB_UI=disable
 RUST_LOG=info
 RUST_LOG_FORMAT=json
 ```
@@ -36,6 +37,7 @@ Railway pre-deploy fails immediately with a clear error if `DATABASE_URL` is mis
 The container also exits immediately on startup if `DATABASE_URL` is missing.
 If `PORT` is unset, the entrypoint defaults it to `3000`.
 For external PostgreSQL providers, keep `DATABASE_URL` Martin-compatible. In testing against Neon, `sslmode=verify-full` worked without `channel_binding=require`, while `channel_binding=require` caused Martin startup to fail.
+Set `MARTIN_WEB_UI=enable-for-all` if you want Martin's built-in web UI enabled.
 
 Expose `Martin` with public networking if the service should be reachable from clients.
 

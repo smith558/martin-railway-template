@@ -2,7 +2,7 @@ listen_addresses: "0.0.0.0:${PORT}"
 worker_processes: 4
 cache_size_mb: 256
 preferred_encoding: gzip
-web_ui: disable
+web_ui: ${MARTIN_WEB_UI:-disable}
 on_invalid: abort
 
 postgres:
