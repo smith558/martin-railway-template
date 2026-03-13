@@ -6,7 +6,7 @@ Minimal Railway template seed for self-hosting [Martin](https://maplibre.org/mar
 
 - `Dockerfile`: pinned Martin image
 - `martin.yaml`: production-leaning config
-- `railway.toml`: Docker build and `/health` health check
+- `railway.toml`: Docker build, pre-deploy validation, and `/health` health check
 
 ## Template defaults
 
@@ -32,7 +32,8 @@ RUST_LOG=info
 RUST_LOG_FORMAT=json
 ```
 
-The container exits immediately with a clear error if `DATABASE_URL` is missing.
+Railway pre-deploy fails immediately with a clear error if `DATABASE_URL` is missing.
+The container also exits immediately on startup if `DATABASE_URL` is missing.
 If `PORT` is unset, the entrypoint defaults it to `3000`.
 For external PostgreSQL providers, keep `DATABASE_URL` Martin-compatible. In testing against Neon, `sslmode=verify-full` worked without `channel_binding=require`, while `channel_binding=require` caused Martin startup to fail.
 
