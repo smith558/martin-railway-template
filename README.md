@@ -1,46 +1,49 @@
 # Martin on Railway
 
-This service runs [Martin](https://maplibre.org/martin/) on Railway and connects to a PostGIS database over Railway private networking.
+Minimal Railway template seed for self-hosting [Martin](https://maplibre.org/martin/) against a PostGIS-backed PostgreSQL database.
 
-## What gets published
+## Included
 
-Martin auto-publishes only PostGIS sources from the `tiles` schema.
+- `Dockerfile`: pinned Martin image
+- `martin.yaml`: production-leaning config
+- `railway.toml`: Docker build and `/health` health check
 
-- PostGIS tables with geometry columns
-- PostgreSQL functions that return MVT
+## Template defaults
 
-## Important URLs
+- Binds to `0.0.0.0:${PORT:-3000}`
+- Reads PostgreSQL connection from `DATABASE_URL`
+- Disables the Martin web UI
+- Fails startup on invalid config
+- Auto-publishes only PostGIS sources in the `tiles` schema
 
-- `/health` — basic health check
-- `/catalog` — list of available sources
-- `/{sourceID}` — TileJSON for a source
-- `/{sourceID}/{z}/{x}/{y}` — tiles for a source
+## Railway wiring
 
-## Default source ID format
+Create a Railway project with:
 
-- Tables: `table.{schema}.{table}.{column}`
-- Functions: `{schema}.{function}`
+- a PostGIS-capable database service named `PostGIS`
+- a service from this repo named `Martin`
 
-## Quick verification
+Set these variables on `Martin`:
 
-After deployment, create a schema and test layer:
+```env
+DATABASE_URL=${{PostGIS.DATABASE_URL}}
+RUST_LOG=info
+RUST_LOG_FORMAT=json
+```
 
-```sql
-CREATE EXTENSION IF NOT EXISTS postgis;
-CREATE SCHEMA IF NOT EXISTS tiles;
+Expose `Martin` with public networking if the service should be reachable from clients.
 
-CREATE TABLE IF NOT EXISTS tiles.sample_points (
-  id bigserial PRIMARY KEY,
-  name text NOT NULL,
-  geom geometry(Point, 4326) NOT NULL
-);
+## Expected endpoints
 
-INSERT INTO tiles.sample_points (name, geom)
-VALUES
-  ('London', ST_SetSRID(ST_MakePoint(-0.1276, 51.5072), 4326)),
-  ('Ascot', ST_SetSRID(ST_MakePoint(-0.6718, 51.4108), 4326))
-ON CONFLICT DO NOTHING;
+- `/health`
+- `/catalog`
+- `/{sourceID}`
+- `/{sourceID}/{z}/{x}/{y}`
 
-CREATE INDEX IF NOT EXISTS sample_points_geom_gix
-  ON tiles.sample_points
-  USING GIST (geom);
+Table source IDs default to `table.{schema}.{table}.{column}`.
+
+## Intended usage
+
+Keep user-managed spatial tables and MVT-returning functions in the `tiles` schema.
+
+If you need to change publish rules, CORS, route prefixes, caching, or add other sources, edit `martin.yaml` and redeploy.
