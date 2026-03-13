@@ -31,6 +31,8 @@ RUST_LOG=info
 RUST_LOG_FORMAT=json
 ```
 
+The container exits immediately with a clear error if `DATABASE_URL` is missing.
+
 Expose `Martin` with public networking if the service should be reachable from clients.
 
 ## Expected endpoints
