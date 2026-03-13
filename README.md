@@ -1,3 +1,4 @@
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/ZJKGyS?referralCode=MtbmC4&utm_medium=integration&utm_source=template&utm_campaign=generic)
 # Martin on Railway
 
 Minimal Railway template seed for self-hosting [Martin](https://maplibre.org/martin/) against a PostGIS-backed PostgreSQL database.
