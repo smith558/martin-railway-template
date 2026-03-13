@@ -1,4 +1,4 @@
-listen_addresses: "0.0.0.0:${PORT:-3000}"
+listen_addresses: "0.0.0.0:${PORT}"
 worker_processes: 4
 cache_size_mb: 256
 preferred_encoding: gzip

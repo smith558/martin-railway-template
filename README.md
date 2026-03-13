@@ -10,7 +10,7 @@ Minimal Railway template seed for self-hosting [Martin](https://maplibre.org/mar
 
 ## Template defaults
 
-- Binds to `0.0.0.0:${PORT:-3000}`
+- Binds to `0.0.0.0:${PORT}`
 - Reads PostgreSQL connection from `DATABASE_URL`
 - Disables the Martin web UI
 - Fails startup on invalid config
@@ -33,6 +33,8 @@ RUST_LOG_FORMAT=json
 ```
 
 The container exits immediately with a clear error if `DATABASE_URL` is missing.
+If `PORT` is unset, the entrypoint defaults it to `3000`.
+For external PostgreSQL providers, keep `DATABASE_URL` Martin-compatible. In local testing against Neon, `sslmode=require` worked, while `channel_binding=require` caused Martin startup to fail.
 
 Expose `Martin` with public networking if the service should be reachable from clients.
 
