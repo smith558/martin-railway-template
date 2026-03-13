@@ -13,7 +13,7 @@ postgres:
 
   auto_publish:
     from_schemas:
-      - tiles
+      - ${MARTIN_PUBLISH_SCHEMA:-tiles}
     tables:
       source_id_format: "table.{schema}.{table}.{column}"
       clip_geom: true

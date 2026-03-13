@@ -14,7 +14,7 @@ Minimal Railway template seed for self-hosting [Martin](https://maplibre.org/mar
 - Reads PostgreSQL connection from `DATABASE_URL`
 - Disables the Martin web UI
 - Fails startup on invalid config
-- Auto-publishes only PostGIS sources in the `tiles` schema
+- Auto-publishes only PostGIS sources in `MARTIN_PUBLISH_SCHEMA` or `tiles` by default
 
 ## Railway wiring
 
@@ -27,6 +27,7 @@ Set these variables on `Martin`:
 
 ```env
 DATABASE_URL=${{PostGIS.DATABASE_URL}}
+MARTIN_PUBLISH_SCHEMA=tiles
 RUST_LOG=info
 RUST_LOG_FORMAT=json
 ```
@@ -47,5 +48,7 @@ Table source IDs default to `table.{schema}.{table}.{column}`.
 ## Intended usage
 
 Keep user-managed spatial tables and MVT-returning functions in the `tiles` schema.
+
+If you want a different schema, set `MARTIN_PUBLISH_SCHEMA`.
 
 If you need to change publish rules, CORS, route prefixes, caching, or add other sources, edit `martin.yaml` and redeploy.
