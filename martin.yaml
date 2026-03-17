@@ -6,9 +6,8 @@ web_ui: ${MARTIN_WEB_UI}
 on_invalid: abort
 
 fonts:
-  - /usr/share/fonts/truetype/dejavu
-
-sprites: []
+  paths:
+    - /usr/share/fonts/truetype/dejavu
 
 styles:
   paths:
