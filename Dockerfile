@@ -46,6 +46,7 @@ RUN apt-get update \
         libsqlite3-0 \
         libssl3 \
         libvulkan1 \
+        mesa-vulkan-drivers \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /src/target/release/martin /usr/local/bin/martin

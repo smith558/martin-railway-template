@@ -80,10 +80,10 @@ Before they will render correctly, update each style JSON to match your Martin s
 - replace the `tiles` URL with your actual Martin source ID path from `/catalog`
 - replace `source-layer` with the actual vector tile layer name in that source
 
-For example, if Martin publishes a source like `table.public.Dataset.spatialGeom`, your style `tiles` value should point to:
+For example, if Martin publishes a source like `Dataset`, your style `tiles` value can point back at the same Martin instance:
 
 ```text
-http://127.0.0.1:${PORT}/table.public.Dataset.spatialGeom/{z}/{x}/{y}
+http://127.0.0.1:3000/Dataset/{z}/{x}/{y}
 ```
 
 In many setups, the vector `source-layer` matches the table name, so `Dataset` is a reasonable default. Verify that value against your actual tile metadata if rendering returns blank tiles.

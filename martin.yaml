@@ -5,13 +5,10 @@ preferred_encoding: gzip
 web_ui: ${MARTIN_WEB_UI}
 on_invalid: abort
 
-fonts:
-  paths:
-    - /usr/share/fonts/truetype/dejavu
+fonts: /usr/share/fonts/truetype/dejavu
 
 styles:
-  paths:
-    - /etc/martin/styles
+  paths: /etc/martin/styles
   rendering: ${MARTIN_STYLE_RENDERING}
 
 postgres:
