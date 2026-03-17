@@ -8,7 +8,8 @@ on_invalid: abort
 fonts: /usr/share/fonts/truetype/dejavu
 
 styles:
-  paths: /tmp/martin-styles
+  paths:
+    - /tmp/martin-styles
   rendering: ${MARTIN_STYLE_RENDERING}
 
 postgres:
