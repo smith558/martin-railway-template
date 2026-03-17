@@ -1,0 +1,44 @@
+{
+  "version": 8,
+  "name": "Basic Points",
+  "sources": {
+    "martin_source": {
+      "type": "vector",
+      "tiles": [
+        "http://127.0.0.1:__PORT__/Dataset/{z}/{x}/{y}"
+      ],
+      "minzoom": 0,
+      "maxzoom": 14
+    }
+  },
+  "layers": [
+    {
+      "id": "points",
+      "type": "circle",
+      "source": "martin_source",
+      "source-layer": "Dataset",
+      "paint": {
+        "circle-color": "#ff5a36",
+        "circle-opacity": 0.9,
+        "circle-radius": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          3,
+          2,
+          8,
+          4,
+          12,
+          7
+        ],
+        "circle-stroke-color": "#111111",
+        "circle-stroke-opacity": 0.95,
+        "circle-stroke-width": 1
+      }
+    }
+  ]
+}

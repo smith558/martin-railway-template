@@ -71,12 +71,13 @@ If you add new style files under `/etc/martin/styles`, restart Martin so they ar
 
 ## Starter styles
 
-Two example MapLibre styles are included:
+Three example MapLibre styles are included:
 
 - `basic-fill`
 - `basic-line`
+- `basic-points`
 
-They are set up as transparent overlays so they can sit on top of terrain or other basemap tiles in Leaflet.
+They are set up as transparent overlays so they can sit on top of terrain or other basemap tiles in Leaflet. Use `basic-points` when `Dataset` contains point geometries; the other two styles are intended for polygon and line data.
 
 Before they will render correctly, update each style JSON to match your Martin source:
 
@@ -95,4 +96,10 @@ Then Martin can render raster tiles from the style endpoint:
 
 ```text
 /style/basic-fill/{z}/{x}/{y}.png
+```
+
+For point datasets, use:
+
+```text
+/style/basic-points/{z}/{x}/{y}.png
 ```
