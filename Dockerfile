@@ -45,6 +45,7 @@ RUN apt-get update \
         libpq5 \
         libsqlite3-0 \
         libssl3 \
+        libvulkan1 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /src/target/release/martin /usr/local/bin/martin
