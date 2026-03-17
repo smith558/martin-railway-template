@@ -1,4 +1,4 @@
-FROM rust:1-bookworm AS builder
+FROM rust:1-trixie AS builder
 
 ARG MARTIN_VERSION=martin-v1.3.1
 
@@ -27,7 +27,7 @@ RUN git clone --depth 1 --branch "${MARTIN_VERSION}" https://github.com/maplibre
 
 RUN cargo build --release --features=unstable-rendering
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 COPY martin.yaml /etc/martin/martin.yaml
