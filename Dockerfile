@@ -16,6 +16,8 @@ RUN apt-get update \
         libpq-dev \
         libsqlite3-dev \
         libssl-dev \
+        nodejs \
+        npm \
         pkg-config \
     && rm -rf /var/lib/apt/lists/*
 

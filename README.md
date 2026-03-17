@@ -73,6 +73,8 @@ Two example MapLibre styles are included:
 - `basic-fill`
 - `basic-line`
 
+They are set up as transparent overlays so they can sit on top of terrain or other basemap tiles in Leaflet.
+
 Before they will render correctly, update each style JSON to match your Martin source:
 
 - replace the `tiles` URL with your actual Martin source ID path from `/catalog`

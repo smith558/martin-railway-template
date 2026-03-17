@@ -13,20 +13,13 @@
   },
   "layers": [
     {
-      "id": "background",
-      "type": "background",
-      "paint": {
-        "background-color": "#f4f1e8"
-      }
-    },
-    {
       "id": "polygons-fill",
       "type": "fill",
       "source": "martin_source",
       "source-layer": "Dataset",
       "paint": {
         "fill-color": "#4f8a5b",
-        "fill-opacity": 0.55
+        "fill-opacity": 0.25
       }
     },
     {
@@ -36,6 +29,7 @@
       "source-layer": "Dataset",
       "paint": {
         "line-color": "#214d2b",
+        "line-opacity": 0.8,
         "line-width": [
           "interpolate",
           [
