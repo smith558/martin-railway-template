@@ -23,6 +23,17 @@ export MARTIN_WEB_UI="${MARTIN_WEB_UI:-disable}"
 export MARTIN_PUBLISH_SCHEMA="${MARTIN_PUBLISH_SCHEMA:-public}"
 export MARTIN_STYLE_RENDERING="${MARTIN_STYLE_RENDERING:-true}"
 
+STYLE_TEMPLATE_DIR="/etc/martin/styles"
+STYLE_RUNTIME_DIR="/tmp/martin-styles"
+
+mkdir -p "${STYLE_RUNTIME_DIR}"
+
+for template in "${STYLE_TEMPLATE_DIR}"/*.json; do
+  [ -f "${template}" ] || continue
+  target="${STYLE_RUNTIME_DIR}/$(basename "${template}")"
+  sed "s/__PORT__/${PORT}/g" "${template}" > "${target}"
+done
+
 if [ "${check_only}" = "true" ]; then
   exit 0
 fi

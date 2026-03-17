@@ -8,7 +8,7 @@ on_invalid: abort
 fonts: /usr/share/fonts/truetype/dejavu
 
 styles:
-  paths: /etc/martin/styles
+  paths: /tmp/martin-styles
   rendering: ${MARTIN_STYLE_RENDERING}
 
 postgres:
@@ -21,7 +21,7 @@ postgres:
     from_schemas:
       - ${MARTIN_PUBLISH_SCHEMA}
     tables:
-      source_id_format: "table.{schema}.{table}.{column}"
+      source_id_format: "{table}"
       clip_geom: true
       buffer: 64
       extent: 4096

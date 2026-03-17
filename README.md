@@ -37,6 +37,8 @@ RUST_LOG=info
 RUST_LOG_FORMAT=json
 ```
 
+Use unquoted Railway values. For example, prefer `MARTIN_PUBLISH_SCHEMA=public` over `MARTIN_PUBLISH_SCHEMA="public"`.
+
 Railway pre-deploy fails immediately with a clear error if `DATABASE_URL` is missing.
 The container also exits immediately on startup if `DATABASE_URL` is missing.
 If `PORT` is unset, the entrypoint defaults it to `3000`.
@@ -55,7 +57,7 @@ Expose `Martin` with public networking if the service should be reachable from c
 - `/style/{style_id}`
 - `/style/{style_id}/{z}/{x}/{y}.png`
 
-Table source IDs default to `table.{schema}.{table}.{column}`.
+Table source IDs default to `{table}` in this template, so a `public.Dataset` table publishes as `Dataset`.
 
 ## Intended usage
 
@@ -83,7 +85,7 @@ Before they will render correctly, update each style JSON to match your Martin s
 For example, if Martin publishes a source like `Dataset`, your style `tiles` value can point back at the same Martin instance:
 
 ```text
-http://127.0.0.1:3000/Dataset/{z}/{x}/{y}
+http://127.0.0.1:${PORT}/Dataset/{z}/{x}/{y}
 ```
 
 In many setups, the vector `source-layer` matches the table name, so `Dataset` is a reasonable default. Verify that value against your actual tile metadata if rendering returns blank tiles.
