@@ -1,0 +1,45 @@
+{
+  "version": 8,
+  "name": "Basic Line",
+  "sources": {
+    "martin_source": {
+      "type": "vector",
+      "tiles": [
+        "http://127.0.0.1:${PORT}/table.public.Dataset.spatialGeom/{z}/{x}/{y}"
+      ],
+      "minzoom": 0,
+      "maxzoom": 14
+    }
+  },
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "#f8f7f3"
+      }
+    },
+    {
+      "id": "lines",
+      "type": "line",
+      "source": "martin_source",
+      "source-layer": "Dataset",
+      "paint": {
+        "line-color": "#b2452f",
+        "line-width": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          4,
+          0.75,
+          12,
+          3
+        ]
+      }
+    }
+  ]
+}

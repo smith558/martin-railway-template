@@ -5,6 +5,16 @@ preferred_encoding: gzip
 web_ui: ${MARTIN_WEB_UI}
 on_invalid: abort
 
+fonts:
+  - /usr/share/fonts/truetype/dejavu
+
+sprites: []
+
+styles:
+  paths:
+    - /etc/martin/styles
+  rendering: ${MARTIN_STYLE_RENDERING}
+
 postgres:
   connection_string: ${DATABASE_URL}
   default_srid: 4326

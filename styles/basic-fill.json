@@ -1,0 +1,55 @@
+{
+  "version": 8,
+  "name": "Basic Fill",
+  "sources": {
+    "martin_source": {
+      "type": "vector",
+      "tiles": [
+        "http://127.0.0.1:${PORT}/table.public.Dataset.spatialGeom/{z}/{x}/{y}"
+      ],
+      "minzoom": 0,
+      "maxzoom": 14
+    }
+  },
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "#f4f1e8"
+      }
+    },
+    {
+      "id": "polygons-fill",
+      "type": "fill",
+      "source": "martin_source",
+      "source-layer": "Dataset",
+      "paint": {
+        "fill-color": "#4f8a5b",
+        "fill-opacity": 0.55
+      }
+    },
+    {
+      "id": "polygons-outline",
+      "type": "line",
+      "source": "martin_source",
+      "source-layer": "Dataset",
+      "paint": {
+        "line-color": "#214d2b",
+        "line-width": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          5,
+          0.5,
+          12,
+          2
+        ]
+      }
+    }
+  ]
+}

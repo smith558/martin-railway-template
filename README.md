@@ -2,10 +2,11 @@
 # Martin on Railway
 
 Minimal Railway template seed for self-hosting [Martin](https://maplibre.org/martin/) against a PostGIS-backed PostgreSQL database.
+This variant builds Martin from source with `unstable-rendering` enabled so it can expose style-rendered raster tiles.
 
 ## Included
 
-- `Dockerfile`: pinned Martin image
+- `Dockerfile`: custom Martin build with `unstable-rendering`
 - `martin.yaml`: production-leaning config
 - `railway.toml`: Docker build, pre-deploy validation, and `/health` health check
 
@@ -14,6 +15,7 @@ Minimal Railway template seed for self-hosting [Martin](https://maplibre.org/mar
 - Binds to `0.0.0.0:${PORT}`
 - Reads PostgreSQL connection from `DATABASE_URL`
 - Disables the Martin web UI
+- Enables style rendering by default with `MARTIN_STYLE_RENDERING=true`
 - Fails startup on invalid config
 - Auto-publishes only PostGIS sources in `MARTIN_PUBLISH_SCHEMA` or `public` by default
 
@@ -30,6 +32,7 @@ Set these variables on `Martin`:
 DATABASE_URL=${{PostGIS.DATABASE_URL}}
 MARTIN_PUBLISH_SCHEMA=public
 MARTIN_WEB_UI=disable
+MARTIN_STYLE_RENDERING=true
 RUST_LOG=info
 RUST_LOG_FORMAT=json
 ```
@@ -39,6 +42,7 @@ The container also exits immediately on startup if `DATABASE_URL` is missing.
 If `PORT` is unset, the entrypoint defaults it to `3000`.
 For external PostgreSQL providers, keep `DATABASE_URL` Martin-compatible. In testing against Neon, `sslmode=verify-full` worked without `channel_binding=require`, while `channel_binding=require` caused Martin startup to fail.
 Set `MARTIN_WEB_UI=enable-for-all` if you want Martin's built-in web UI enabled.
+This repo ships starter styles in [`styles/`](/home/stanley/repos/martin-railway-template/styles). They are copied to `/etc/martin/styles` during the image build so Martin can expose `/style/<style_id>` and `/style/<style_id>/{z}/{x}/{y}.png`.
 
 Expose `Martin` with public networking if the service should be reachable from clients.
 
@@ -48,6 +52,8 @@ Expose `Martin` with public networking if the service should be reachable from c
 - `/catalog`
 - `/{sourceID}`
 - `/{sourceID}/{z}/{x}/{y}`
+- `/style/{style_id}`
+- `/style/{style_id}/{z}/{x}/{y}.png`
 
 Table source IDs default to `table.{schema}.{table}.{column}`.
 
@@ -58,3 +64,30 @@ Keep user-managed spatial tables and MVT-returning functions in the `public` sch
 If you want a different schema, set `MARTIN_PUBLISH_SCHEMA`.
 
 If you need to change publish rules, CORS, route prefixes, caching, or add other sources, edit `martin.yaml` and redeploy.
+If you add new style files under `/etc/martin/styles`, restart Martin so they are picked up.
+
+## Starter styles
+
+Two example MapLibre styles are included:
+
+- `basic-fill`
+- `basic-line`
+
+Before they will render correctly, update each style JSON to match your Martin source:
+
+- replace the `tiles` URL with your actual Martin source ID path from `/catalog`
+- replace `source-layer` with the actual vector tile layer name in that source
+
+For example, if Martin publishes a source like `table.public.Dataset.spatialGeom`, your style `tiles` value should point to:
+
+```text
+http://127.0.0.1:${PORT}/table.public.Dataset.spatialGeom/{z}/{x}/{y}
+```
+
+In many setups, the vector `source-layer` matches the table name, so `Dataset` is a reasonable default. Verify that value against your actual tile metadata if rendering returns blank tiles.
+
+Then Martin can render raster tiles from the style endpoint:
+
+```text
+/style/basic-fill/{z}/{x}/{y}.png
+```
