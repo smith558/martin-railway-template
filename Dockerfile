@@ -30,7 +30,6 @@ RUN cargo build --release --features=unstable-rendering
 FROM debian:trixie-slim
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-COPY martin.yaml /etc/martin/martin.yaml
 COPY styles /etc/martin/styles
 
 RUN apt-get update \
@@ -54,4 +53,3 @@ COPY --from=builder /src/target/release/martin /usr/local/bin/martin
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["--config", "/etc/martin/martin.yaml"]

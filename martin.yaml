@@ -1,3 +1,7 @@
+# Reference only.
+# The container generates /tmp/martin-runtime.yaml in docker-entrypoint.sh
+# and starts Martin with that file.
+
 listen_addresses: "0.0.0.0:${PORT}"
 worker_processes: 4
 cache_size_mb: 512
