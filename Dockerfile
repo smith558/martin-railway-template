@@ -1,6 +1,6 @@
 FROM rust:1-trixie AS builder
 
-ARG MARTIN_VERSION=martin-v1.3.1
+ARG MARTIN_VERSION=martin-v1.4.0
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
