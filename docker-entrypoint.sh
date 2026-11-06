@@ -38,7 +38,8 @@ done
 cat > "${RUNTIME_CONFIG}" <<EOF
 listen_addresses: "0.0.0.0:${PORT}"
 worker_processes: 4
-cache_size_mb: 512
+cache:
+  size_mb: 512
 preferred_encoding: gzip
 web_ui: ${MARTIN_WEB_UI}
 on_invalid: abort

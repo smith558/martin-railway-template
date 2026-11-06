@@ -1,55 +1,19 @@
-FROM rust:1-trixie AS builder
+ARG MARTIN_VERSION=1.16.1
+FROM ghcr.io/maplibre/martin:${MARTIN_VERSION}
 
-ARG MARTIN_VERSION=martin-v1.4.0
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        build-essential \
-        ca-certificates \
-        clang \
-        cmake \
-        git \
-        libfontconfig1-dev \
-        libfreetype6-dev \
-        libjpeg-dev \
-        libpng-dev \
-        libpq-dev \
-        libsqlite3-dev \
-        libssl-dev \
-        nodejs \
-        npm \
-        pkg-config \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /src
-
-RUN git clone --depth 1 --branch "${MARTIN_VERSION}" https://github.com/maplibre/martin.git .
-
-RUN cargo build --release --features=unstable-rendering
-
-FROM debian:trixie-slim
+# The upstream Linux image includes rendering and its native dependencies.
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 COPY styles /etc/martin/styles
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        ca-certificates \
         fonts-dejavu-core \
-        libcurl4 \
-        libfontconfig1 \
-        libfreetype6 \
-        libjpeg62-turbo \
-        libpng16-16 \
-        libpq5 \
-        libsqlite3-0 \
-        libssl3 \
-        libvulkan1 \
-        mesa-vulkan-drivers \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /src/target/release/martin /usr/local/bin/martin
-
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Railway assigns PORT dynamically; the upstream health check assumes 3000.
+HEALTHCHECK CMD wget --spider "http://127.0.0.1:${PORT:-3000}/health" || exit 1
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

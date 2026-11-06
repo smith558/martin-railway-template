@@ -2,11 +2,11 @@
 # Martin on Railway
 
 Minimal Railway template seed for self-hosting [Martin](https://maplibre.org/martin/) against a PostGIS-backed PostgreSQL database.
-This variant builds Martin from source with `unstable-rendering` enabled so it can expose style-rendered raster tiles.
+This variant uses the official Martin 1.16.1 Linux image, which includes server-side raster rendering.
 
 ## Included
 
-- `Dockerfile`: custom Martin build with `unstable-rendering`
+- `Dockerfile`: pinned upstream Martin image with DejaVu fonts and starter styles
 - `docker-entrypoint.sh`: validates env, generates the runtime Martin config, and starts Martin
 - `railway.toml`: Docker build, pre-deploy validation, and `/health` health check
 
@@ -18,6 +18,19 @@ This variant builds Martin from source with `unstable-rendering` enabled so it c
 - Enables style rendering by default with `MARTIN_STYLE_RENDERING=true`
 - Fails startup on invalid config
 - Auto-publishes only PostGIS sources in `MARTIN_PUBLISH_SCHEMA` or `public` by default
+- Uses Martin's default PostgreSQL source rediscovery interval of ten minutes
+
+## Upgrade compatibility (1.4.0 to 1.16.1)
+
+- Rendering is included in the upstream Linux build. The old `unstable-rendering` Cargo feature no longer exists; using the upstream image also supplies the newer renderer's native libraries.
+- The 512 MB cache now uses `cache.size_mb`. Martin still migrates the old `cache_size_mb` key, but this template uses the current syntax.
+- Martin now polls PostgreSQL source definitions every ten minutes by default. This template keeps that default, so newly added tables/functions in the published schema may appear without a restart.
+- Tile requests now enforce the HTTP `Accept` header. Vector clients should accept `application/x-protobuf` or `application/vnd.mapbox-vector-tile`, or use `*/*`. Raster clients should accept `image/png`. MLT-capable clients can request `application/vnd.maplibre-tile`; ordinary MVT clients do not need to migrate.
+- The configured table/function source ID formats, `/health`, `/catalog`, vector tile paths, and style PNG paths remain supported. No database schema migration is required for this template.
+
+See the [1.16.1 release](https://github.com/maplibre/martin/releases/tag/martin-v1.16.1) and [versioned changelog](https://github.com/maplibre/martin/blob/martin-v1.16.1/martin/CHANGELOG.md). Version 2.0 remains a separate migration and is not used here.
+
+Local upgrade validation covered an image build, startup against PostGIS 17/3.5, table and function source discovery, TileJSON and MVT responses, all three starter style JSON/PNG endpoints, missing-variable validation, and the Docker health check on a custom port. External-provider TLS connections and deployed client applications still need verification in their target environment.
 
 ## Railway wiring
 
