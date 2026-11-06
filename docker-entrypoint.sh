@@ -21,7 +21,25 @@ esac
 export PORT="${PORT:-3000}"
 export MARTIN_WEB_UI="${MARTIN_WEB_UI:-disable}"
 export MARTIN_PUBLISH_SCHEMA="${MARTIN_PUBLISH_SCHEMA:-public}"
-export MARTIN_STYLE_RENDERING="${MARTIN_STYLE_RENDERING:-true}"
+
+case "${PORT}" in
+  *[!0-9]*)
+    echo "error: PORT must be an integer from 1 to 65535." >&2
+    exit 64
+    ;;
+esac
+if [ "${#PORT}" -gt 5 ] || [ "${PORT}" -lt 1 ] || [ "${PORT}" -gt 65535 ]; then
+  echo "error: PORT must be an integer from 1 to 65535." >&2
+  exit 64
+fi
+
+case "${MARTIN_WEB_UI}" in
+  disable|enable-for-all|enableforall) ;;
+  *)
+    echo "error: MARTIN_WEB_UI must be disable or enable-for-all." >&2
+    exit 64
+    ;;
+esac
 
 STYLE_TEMPLATE_DIR="/etc/martin/styles"
 STYLE_RUNTIME_DIR="/tmp/martin-styles"
@@ -49,7 +67,7 @@ fonts: /usr/share/fonts/truetype/dejavu
 styles:
   paths:
     - ${STYLE_RUNTIME_DIR}
-  rendering: ${MARTIN_STYLE_RENDERING}
+  rendering: true
 
 postgres:
   connection_string: ${DATABASE_URL}

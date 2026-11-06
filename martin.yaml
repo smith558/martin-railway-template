@@ -15,7 +15,7 @@ fonts: /usr/share/fonts/truetype/dejavu
 styles:
   paths:
     - /tmp/martin-styles
-  rendering: ${MARTIN_STYLE_RENDERING}
+  rendering: true
 
 postgres:
   connection_string: ${DATABASE_URL}
